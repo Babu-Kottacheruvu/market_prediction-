@@ -1,0 +1,57 @@
+forecast_horizon: 10
+
+walk_forward:
+  train_days: 180
+  validation_days: 30
+  test_days: 30
+  step_days: 30
+  # If the dataset is shorter than train+val+test the trainer falls back to
+  # a reduced split, but never mixes train and test rows.
+  min_train_days: 30
+  min_test_days: 5
+
+xgboost:
+  classifier:
+    n_estimators: 400
+    max_depth: 5
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_weight: 20
+    reg_lambda: 1.0
+    objective: multi:softprob
+    n_jobs: -1
+    tree_method: hist
+    random_state: 42
+  regressor:
+    n_estimators: 400
+    max_depth: 5
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_weight: 20
+    reg_lambda: 1.0
+    objective: reg:squarederror
+    n_jobs: -1
+    tree_method: hist
+    random_state: 42
+  early_stopping_rounds: 30
+
+calibration:
+  enabled: false
+  method: isotonic          # isotonic | platt
+  min_samples: 500
+
+acceptance:
+  # A new model is only promoted if it beats these out-of-sample gates.
+  min_directional_accuracy: 0.50
+  min_brier_vs_baseline: 0.0     # brier must be <= baseline + this tolerance
+  min_samples: 200
+  require_baseline_accuracy_improvement: true
+  require_baseline_price_improvement: true
+
+monitoring:
+  psi_bins: 10                   # bins used for population stability index
+  psi_threshold: 0.20            # PSI above this flags a feature as drifted
+  min_recent_rows: 100           # not enough recent data to monitor below this
+  lookback_days: 7               # window of "recent" data compared to training

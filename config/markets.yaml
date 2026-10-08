@@ -1,0 +1,96 @@
+# Markets, assets and per-timeframe execution cost assumptions.
+# Costs are used ONLY by the backtest/signal engines (never by the ML features).
+
+markets:
+  crypto:
+    provider: mt5
+    session: always        # 24/7
+    assets:
+      - BTCUSDT
+      - ETHUSDT
+      - SOLUSDT
+      - BNBUSDT
+      - XRPUSDT
+      - ADAUSDT
+      - DOGEUSDT
+    aliases:               # symbol alias -> canonical symbol
+      BTCUSD: BTCUSDT
+      ETHUSD: ETHUSDT
+    costs:
+      default:
+        spread: 0.0002          # fraction of price (2 bps)
+        commission: 0.0004      # fraction of notional (taker)
+        slippage: 0.0001
+      1m:
+        spread: 0.0002
+        commission: 0.0004
+        slippage: 0.00015
+      1d:
+        spread: 0.0001
+        commission: 0.0004
+        slippage: 0.00005
+
+  forex:
+    provider: mt5
+    session: fx             # Sun 22:00 UTC - Fri 22:00 UTC
+    assets:
+      - EURUSD
+      - GBPUSD
+      - USDJPY
+      - USDCHF
+      - USDCAD
+      - AUDUSD
+      - NZDUSD
+      - EURGBP
+      - EURJPY
+      - GBPJPY
+      - AUDJPY
+    aliases:
+      EU: EURUSD
+    costs:
+      default:
+        spread: 0.00008
+        commission: 0.0
+        slippage: 0.00002
+      1m:
+        spread: 0.00010
+        commission: 0.0
+        slippage: 0.00003
+
+  commodities:
+    provider: mt5
+    session: exchange
+    assets:
+      - XAUUSD
+      - XAGUSD
+      - USOIL
+      - UKOIL
+      - NATGAS
+      - COPPER
+      - PLATINUM
+    aliases:
+      GOLD: XAUUSD
+      SILVER: XAGUSD
+      WTI: USOIL
+      BRENT: UKOIL
+    costs:
+      default:
+        spread: 0.0003
+        commission: 0.0
+        slippage: 0.0001
+      1m:
+        spread: 0.0004
+        commission: 0.0
+        slippage: 0.00015
+
+# Which higher timeframes provide context for a given primary timeframe.
+# Only CLOSED higher-timeframe candles are ever used (see features/multi_timeframe.py).
+multi_timeframe_context:
+  1m: [5m, 15m, 1h]
+  3m: [15m, 1h, 4h]
+  5m: [15m, 1h, 4h]
+  15m: [1h, 4h, 1d]
+  30m: [4h, 1d]
+  1h: [4h, 1d]
+  4h: [1d]
+  1d: []

@@ -1,0 +1,15 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data        # candles, OOS predictions, sqlite
+      - ./models:/app/models    # trained model packages + registry
+      - ./config:/app/config    # runtime configuration
+    environment:
+      - LOG_LEVEL=INFO
+      - ALLOWED_ORIGINS=*
+      # API_KEY is optional; when set, mutating endpoints require X-API-KEY
+      - API_KEY=
+    restart: unless-stopped

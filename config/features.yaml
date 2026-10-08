@@ -1,0 +1,49 @@
+# Feature engine configuration.
+
+feature_version: v1
+
+returns: [1, 2, 3, 5, 10, 20]
+
+ema_periods: [9, 15, 20, 50, 100, 200]
+sma_periods: [20, 50, 200]
+
+rsi_period: 14
+macd:
+  fast: 12
+  slow: 26
+  signal: 9
+adx_period: 14
+atr_period: 14
+bollinger:
+  period: 20
+  std: 2.0
+stochastic:
+  k_period: 14
+  d_period: 3
+  smooth: 3
+cci_period: 20
+roc_periods: [5, 10, 20]
+momentum_periods: [5, 10, 20]
+
+volume:
+  ma_period: 20
+  zscore_period: 20
+
+volatility:
+  realized_period: 20
+  regime_lookback: 100
+
+market_structure:
+  lookback: 20
+  distance_lookback: 50
+
+# Higher-timeframe feature set (applied per context timeframe).
+htf_features:
+  - ema_20
+  - ema_50
+  - rsi_14
+  - atr_pct
+  - return_5
+  - trend_up       # 1 if ema_20 > ema_50
+
+dropna: true

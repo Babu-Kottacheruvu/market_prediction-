@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+
+# Data & models (real artifacts stay local, never committed)
+data/raw/
+data/processed/
+data/*.db
+data/*.sqlite3
+models/*
+!models/.gitkeep
+*.parquet
+*.joblib
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs & notebooks
+*.log
+.ipynb_checkpoints/

@@ -1,0 +1,50 @@
+# Target generation, signal and risk configuration.
+
+targets:
+  horizon: 10
+  # Direction threshold: future_return must exceed threshold to be UP/DOWN.
+  # mode: atr  -> threshold = (ATR / close) * atr_multiplier
+  # mode: fixed -> threshold = fixed_threshold
+  mode: atr
+  atr_multiplier: 0.5
+  fixed_threshold: 0.0005
+  # Rolling std of past returns used as an alternative volatility floor.
+  vol_floor_period: 50
+
+signal:
+  min_probability: 0.65
+  min_confidence: 0.60
+  min_expected_return_over_cost: 1.0   # expected_return > cost * this factor
+  allowed_regimes: [TRENDING_UP, TRENDING_DOWN, RANGING, HIGH_VOLATILITY, LOW_VOLATILITY]
+  # 1-minute specific: require a larger edge than the round-trip cost.
+  timeframe_overrides:
+    1m:
+      min_probability: 0.70
+      min_expected_return_over_cost: 1.5
+      # Fail closed unless the scalp model, recent data, and short-horizon vote align.
+      scalp_enabled: true
+      scalp_horizons: 3
+      scalp_min_directional_agreement: 0.67
+      scalp_max_candle_age_bars: 2.5
+      allowed_regimes: [TRENDING_UP, TRENDING_DOWN]
+
+risk:
+  atr_period: 14
+  stop_loss_atr: 1.5
+  take_profit_atr: 3.0
+  risk_per_trade: 0.01        # 1% of equity
+  max_position_pct: 0.25
+  reward_risk_min: 1.0
+  timeframe_overrides:
+    1m:
+      stop_loss_atr: 0.8
+      take_profit_atr: 1.4
+      risk_per_trade: 0.005
+      reward_risk_min: 1.5
+
+regime:
+  adx_trending: 25.0
+  adx_strong: 40.0
+  vol_high_quantile: 0.80
+  vol_low_quantile: 0.20
+  lookback: 100

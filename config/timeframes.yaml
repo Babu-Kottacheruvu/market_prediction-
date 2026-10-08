@@ -1,0 +1,28 @@
+# Centralized timeframe configuration.
+# candle_timestamp = candle OPEN time (UTC, tz-aware).
+# offset = pandas offset alias used for resampling.
+timeframes:
+  1m:
+    offset: 1min
+    minutes: 1
+  3m:
+    offset: 3min
+    minutes: 3
+  5m:
+    offset: 5min
+    minutes: 5
+  15m:
+    offset: 15min
+    minutes: 15
+  30m:
+    offset: 30min
+    minutes: 30
+  1h:
+    offset: 1h
+    minutes: 60
+  4h:
+    offset: 4h
+    minutes: 240
+  1d:
+    offset: 1D
+    minutes: 1440
